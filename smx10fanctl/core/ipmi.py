@@ -1,0 +1,53 @@
+from cement import shell
+from .exc import InvalidIPMISettings, UnknownZoneSpecified
+
+
+class IPMI:
+    def __init__(self, host='localhost', username=None, password=None):
+        self._host = host
+        self._username = username
+        self._password = password
+
+        self.ipmi_cmd_base = self._build_base_cmd(
+            self._host,
+            self._username,
+            self._password)
+
+    def _build_base_cmd(self, host, username, password):
+        cmd_name = 'ipmitool'
+
+        if host == 'localhost':
+            return cmd_name
+        elif host and username and password:
+            return '{base} -H {host} -U {username} -P {password}'.format(
+                base=cmd_name,
+                host=host,
+                username=username,
+                password=password)
+        else:
+            raise InvalidIPMISettings('Missing IPMI username and/or password settings')
+
+    def _build_full_cmd(self, cmd):
+        return '{} {}'.format(self.ipmi_cmd_base, cmd)
+
+    def _percentage_to_hex(self, percentage):
+        # Ensure the percentage is always between 0 and 100
+        # to prevent the execution of a wrong command
+        percentage = max(0, min(100, percentage))
+        hex_percentage = (64/100)*float(percentage)
+
+        return '0x{}'.format(int(hex_percentage))
+
+    def set_fan_speed(self, zone, percentage):
+        if zone == 'system':
+            hex_zone = '0x00'
+        elif zone == 'peripheral':
+            hex_zone = '0x01'
+        else:
+            raise UnknownZoneSpecified('Unknown zone: {}'.format(zone))
+
+        hex_percentage = self._percentage_to_hex(percentage)
+        cmd_args = '0x30 0x70 0x66 0x01 {} {}'.format(hex_zone, hex_percentage)
+        cmd = self._build_full_cmd(cmd_args)
+
+        shell.cmd(cmd, capture=False)
