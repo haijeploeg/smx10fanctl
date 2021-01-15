@@ -1,0 +1,49 @@
+ipmi:
+  # Set authentication parameters. host, username and password 
+  # are all optional if none are provided, the application will 
+  # assume IPMI is present on the machine it self (localhost).
+  host: localhost
+  #username: username 
+  #password: supersecret
+
+  # Define the fan profiles that are present on your Supermicro
+  # motherboard. Check your manual or figure this out with ipmitool.
+  # If none are provided this will default to: 
+  # profiles:
+  #   full: 1
+  # Make sure you define at least the 'full' fan profile.
+  profiles:
+    normal: 0
+    full: 1
+    optimal: 2
+    heavyio: 4
+
+zones:
+  # Set the PWM steps for the system zone (FAN1-FAN9).
+  # The used format is 'temp: fan speed percentage'. e.g. 30: 50
+  # The default fan profile for the system zone is:
+  # system:
+  #   0: 30
+  #   80: 100
+  system:
+    0: 20
+    20: 40
+    30: 50
+    40: 60
+    50: 75
+    60: 85
+    70: 100
+
+  # Set the PWM steps for the peripheral zone (FANA-FANC).
+  # The used format is 'temp: fan speed percentage'. e.g. 30: 40
+  # The default fan profile for the peripheral zone is:
+  # peripheral:
+  #   0: 50
+  #   60: 100
+  peripheral:
+    0: 50
+    35: 60
+    40: 70
+    45: 80
+    50: 90
+    55: 100

@@ -50,4 +50,9 @@ class IPMI:
         cmd_args = '0x30 0x70 0x66 0x01 {} {}'.format(hex_zone, hex_percentage)
         cmd = self._build_full_cmd(cmd_args)
 
-        shell.cmd(cmd, capture=False)
+        exit_code = shell.cmd(cmd, capture=False)
+
+        if exit_code == 0:
+            return True
+        else:
+            return False

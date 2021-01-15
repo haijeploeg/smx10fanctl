@@ -1,4 +1,3 @@
-
 from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 from .core.exc import AppError
@@ -8,11 +7,14 @@ from .controllers.set import Set
 
 
 # configuration defaults
-CONFIG = init_defaults('smx10fanctl')
-CONFIG['smx10fanctl']['foo'] = 'bar'
+CONFIG = init_defaults('ipmi', 'zones')
+CONFIG['ipmi']['host'] = 'localhost'
+CONFIG['ipmi']['profiles'] = {'full': 1}
+CONFIG['zones']['system'] = {0: 30, 80: 100}
+CONFIG['zones']['peripheral'] = {0: 50, 60: 100}
 
 
-class App(App):
+class Smx10Fanctl(App):
     """Supermicro X10 Fancontroller primary application."""
 
     class Meta:
@@ -20,6 +22,7 @@ class App(App):
 
         # configuration defaults
         config_defaults = CONFIG
+        config_files = ['./.smx10fanctl.yml']
 
         # call sys.exit() on close
         exit_on_close = True
@@ -28,7 +31,8 @@ class App(App):
         extensions = [
             'yaml',
             'colorlog',
-            'jinja2',
+            'tabulate',
+            'print',
         ]
 
         # configuration handler
@@ -37,11 +41,11 @@ class App(App):
         # configuration file suffix
         config_file_suffix = '.yml'
 
+        # set the output handler
+        output_handler = 'tabulate'
+
         # set the log handler
         log_handler = 'colorlog'
-
-        # set the output handler
-        output_handler = 'jinja2'
 
         # register handlers
         handlers = [
@@ -51,15 +55,8 @@ class App(App):
         ]
 
 
-class AppTest(TestApp,App):
-    """A sub-class of App that is better suited for testing."""
-
-    class Meta:
-        label = 'smx10fanctl'
-
-
 def main():
-    with App() as app:
+    with Smx10Fanctl() as app:
         try:
             app.run()
 

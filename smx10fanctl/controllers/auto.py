@@ -23,4 +23,5 @@ class Auto(Controller):
         system = self.app.pargs.system
         peripheral = self.app.pargs.peripheral
 
-        self.app.log.info(system)
+        self.app.log.info('This function is not implemented yet')
+        print(self.app.config.get('zones', 'system'))

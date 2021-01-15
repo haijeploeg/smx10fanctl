@@ -11,17 +11,6 @@ virtualenv:
 	@echo "VirtualENV Setup Complete. Now run: source env/bin/activate"
 	@echo
 
-test:
-	python -m pytest \
-		-v \
-		--cov=smx10fanctl \
-		--cov-report=term \
-		--cov-report=html:coverage-report \
-		tests/
-
-docker: clean
-	docker build -t smx10fanctl:latest .
-
 dist: clean
 	rm -rf dist/*
 	python setup.py sdist
