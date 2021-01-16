@@ -70,6 +70,6 @@ class Auto(Controller):
                 target_system_temp = system_target_temperatures[index]
                 target_system_percentage = system_configuration[target_system_temp]
 
-            print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(target_system_temp, target_system_percentage))
+            print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
 
             time.sleep(poll_interval)
