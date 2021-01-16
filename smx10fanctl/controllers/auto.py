@@ -1,6 +1,7 @@
 from cement import Controller, ex
 from ..core.ipmi import IPMI
 from ..core.coretemp import get_current_cpu_temp
+from ..core.exc import NoFullFanProfileFound, CouldNotSetFanProfile
 
 import time
 import bisect
@@ -36,6 +37,7 @@ class Auto(Controller):
         host = self.app.config.get('ipmi', 'host')
         username = self.app.config.get('ipmi', 'username')
         password = self.app.config.get('ipmi', 'password')
+        profiles = self.app.config.get('ipmi', 'profiles')
 
         if system:
             system_configuration = self.app.config.get('zones', 'system')
@@ -48,6 +50,17 @@ class Auto(Controller):
         
         # Setup IPMI
         ipmi = IPMI(host=host, username=username, password=password)
+
+        # Before starting, ensure the full fan mode is set
+        if 'full' not in profiles:
+            self.app.log.fatal('No fan profile with the name: full found in the configuration')
+            raise NoFullFanProfileFound()
+
+        full_profile_id = profiles['full']
+        if full_profile_id != ipmi.get_current_fan_profile():
+            if not ipmi.set_fan_profile(full_profile_id):
+                self.app.log.fatal('Could not set fan profile with id: {}'.format(full_profile_id))
+                raise CouldNotSetFanProfile()
 
         while True:
             # Get the current temp
@@ -75,11 +88,11 @@ class Auto(Controller):
                 # Execute the command to set the fan speed in the system zone
                 result = ipmi.set_fan_speed('system', target_system_percentage)
                 if not result:
-                    self.app.log.error('Failed to set the fan speed to {}% in zone system.'.format(
+                    self.app.log.error('Failed to set the fan speed to {}% in zone system'.format(
                         target_system_percentage
                     ))
                 else:
-                    self.app.log.info('Successfully set the fan speed to {}% in zone system.'.format(
+                    self.app.log.info('Successfully set the fan speed to {}% in zone system'.format(
                         target_system_percentage
                     ))
 
@@ -103,11 +116,11 @@ class Auto(Controller):
                 # Execute the command to set the fan speed in the system zone
                 result = ipmi.set_fan_speed('peripheral', target_peripheral_percentage)
                 if not result:
-                    self.app.log.error('Failed to set the fan speed to {}% in zone peripheral.'.format(
+                    self.app.log.error('Failed to set the fan speed to {}% in zone peripheral'.format(
                         target_peripheral_percentage
                     ))
                 else:
-                    self.app.log.info('Successfully set the fan speed to {}% in zone peripheral.'.format(
+                    self.app.log.info('Successfully set the fan speed to {}% in zone peripheral'.format(
                         target_peripheral_percentage
                     ))
 

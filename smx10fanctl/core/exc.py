@@ -9,3 +9,11 @@ class InvalidIPMISettings(Exception):
 class UnknownZoneSpecified(Exception):
     """Unkown zone specified error."""
     pass
+
+class NoFullFanProfileFound(Exception):
+    """No full fan profile set."""
+    pass
+
+class CouldNotSetFanProfile(Exception):
+    """Could not set fan profile."""
+    pass

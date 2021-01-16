@@ -43,11 +43,11 @@ class Set(Controller):
         if system:
             result = ipmi.set_fan_speed('system', percentage)
             if not result:
-                self.app.log.error('Failed to set the fan speed to {}% in zone system.'.format(
+                self.app.log.error('Failed to set the fan speed to {}% in zone system'.format(
                     percentage
                 ))
             else:
-                self.app.log.info('Successfully set the fan speed to {}% in zone system.'.format(
+                self.app.log.info('Successfully set the fan speed to {}% in zone system'.format(
                     percentage
                 ))
 
@@ -55,10 +55,10 @@ class Set(Controller):
         if peripheral:
             result = ipmi.set_fan_speed('peripheral', percentage)
             if not result:
-                self.app.log.error('Failed to set the fan speed to {}% in zone peripheral.'.format(
+                self.app.log.error('Failed to set the fan speed to {}% in zone peripheral'.format(
                     percentage
                 ))
             else:
-                self.app.log.info('Successfully set the fan speed to {}% in zone peripheral.'.format(
+                self.app.log.info('Successfully set the fan speed to {}% in zone peripheral'.format(
                     percentage
                 ))

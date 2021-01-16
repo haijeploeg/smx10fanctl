@@ -41,6 +41,9 @@ class IPMI:
 
         return '0x{}'.format(int(hex_percentage))
 
+    def _profile_to_hex(self, profile_id):
+        return '0x0{}'.format(int(profile_id))
+
     def get_current_fan_profile(self):
         cmd_args = 'raw 0x30 0x45 0x00'
         cmd = self._build_full_cmd(cmd_args)
@@ -50,7 +53,19 @@ class IPMI:
         if exit_code != 0:
             return err
         
-        return out
+        return int(out)
+
+    def set_fan_profile(self, profile_id):
+        hex_profile = self._profile_to_hex(profile_id)
+        cmd_args = 'raw 0x30 0x45 0x01 {}'.format(hex_profile)
+        cmd = self._build_full_cmd(cmd_args, redirect_stdout=True)
+
+        exit_code = shell.cmd(cmd)
+
+        if exit_code != 0:
+            return False
+        
+        return True
 
     def set_fan_speed(self, zone, percentage):
         if zone == 'system':
