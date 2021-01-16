@@ -67,9 +67,31 @@ class Auto(Controller):
                 else:
                     index = system_temp_list.index(current_temp)
 
+                # Get the configured target temperature and its configured fan percentage
                 target_system_temp = system_target_temperatures[index]
                 target_system_percentage = system_configuration[target_system_temp]
 
-            print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
+                # Execute the command to set the fan speed in the system zone
+                print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
+
+
+            if peripheral:
+                peripheral_temp_list = peripheral_target_temperatures.copy()
+                # if the current temperature does not match exact any of the
+                # configured pwm steps target temperatures, ensure the current
+                # temperature is placed in the correct place in the list. And 
+                # get the correct index value -1. If the current temperature does
+                # match any of the configured values, get that exact index.
+                if current_temp not in peripheral_temp_list:
+                    bisect.insort(peripheral_temp_list, current_temp)
+                    index = max(0, peripheral_temp_list.index(current_temp) - 1)
+                else:
+                    index = peripheral_temp_list.index(current_temp)
+
+                target_peripheral_temp = peripheral_target_temperatures[index]
+                target_peripheral_percentage = peripheral_configuration[target_peripheral_temp]
+                
+                # Execute the command to set the fan speed in the system zone
+                print('ZONE PERIPHERAL - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
 
             time.sleep(poll_interval)
