@@ -5,7 +5,7 @@ clean:
 
 virtualenv:
 	python3 -m venv env
-	env/bin/pip install wheel pylint
+	env/bin/pip install wheel pylint cement==3.0.4
 	env/bin/pip install -e .
 	env/bin/python setup.py develop
 	@echo
