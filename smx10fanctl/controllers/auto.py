@@ -52,7 +52,7 @@ class Auto(Controller):
         while True:
             # Get the current temp
             current_temp = get_current_cpu_temp(coretemp_label_prefix)
-            self.app.log.info('Current temperature: {}'.format(current_temp))
+            self.app.log.info('Current CPU temperature: {}'.format(current_temp))
 
             # If the system flag is applied, follow this logic
             if system:
@@ -80,7 +80,8 @@ class Auto(Controller):
                     ))
                 else:
                     self.app.log.info('Successfully set the fan speed to {}% in zone system.'.format(
-                        target_system_percentage))
+                        target_system_percentage
+                    ))
 
             # If the peripheral flag is applied, follow this logic
             if peripheral:
@@ -107,7 +108,8 @@ class Auto(Controller):
                     ))
                 else:
                     self.app.log.info('Successfully set the fan speed to {}% in zone peripheral.'.format(
-                        target_peripheral_percentage))
+                        target_peripheral_percentage
+                    ))
 
             # Sleep the configured poll_interval_seconds
             time.sleep(poll_interval)
