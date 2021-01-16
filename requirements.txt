@@ -1,6 +1,0 @@
-cement==3.0.4
-wheel>=0.31.0
-pyyaml
-colorlog
-tabulate
-psutil

@@ -35,7 +35,6 @@ class Smx10Fanctl(App):
         extensions = [
             'yaml',
             'colorlog',
-            'tabulate',
             'print',
         ]
 
@@ -44,9 +43,6 @@ class Smx10Fanctl(App):
 
         # configuration file suffix
         config_file_suffix = '.yml'
-
-        # set the output handler
-        output_handler = 'tabulate'
 
         # set the log handler
         log_handler = 'colorlog'

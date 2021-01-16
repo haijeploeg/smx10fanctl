@@ -19,8 +19,11 @@ setup(
     url='https://github.com/haijeploeg/smx10fanctl',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'tests*']),
-    # package_data={'smx10fanctl': ['templates/*']},
-    # include_package_data=True,
+    install_requires=['cement==3.0.4',
+                      'wheel>=0.31.0',
+                      'pyyaml',
+                      'colorlog',
+                      'psutil'],
     entry_points="""
         [console_scripts]
         smx10fanctl = smx10fanctl.main:main
