@@ -60,7 +60,7 @@ class IPMI:
         cmd_args = 'raw 0x30 0x45 0x01 {}'.format(hex_profile)
         cmd = self._build_full_cmd(cmd_args, redirect_stdout=True)
 
-        exit_code = shell.cmd(cmd)
+        exit_code = shell.cmd(cmd, capture=False)
 
         if exit_code != 0:
             return False
