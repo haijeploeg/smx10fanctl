@@ -1,3 +1,5 @@
+[![PyPI](https://img.shields.io/pypi/v/smx10fanctl.svg)](https://pypi.org/project/smx10fanctl)
+
 # smx10fanctl 
 Smx10fanctl is a fancontroller for Supermicro boards using IPMI raw commands. I created this project because I wanted a quiet homeserver. Supermicro motherboards expects high RPM fans and expects fans that have at least 600RPM minimal. 
 
