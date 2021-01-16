@@ -58,6 +58,7 @@ class IPMI:
     def set_fan_profile(self, profile_id):
         hex_profile = self._profile_to_hex(profile_id)
         cmd_args = 'raw 0x30 0x45 0x01 {}'.format(hex_profile)
+        print(self._build_full_cmd(cmd_args, redirect_stdout=True)
         cmd = self._build_full_cmd(cmd_args, redirect_stdout=True)
 
         exit_code = shell.cmd(cmd)
