@@ -61,6 +61,10 @@ class Auto(Controller):
             if not ipmi.set_fan_profile(full_profile_id):
                 self.app.log.fatal('Could not set fan profile with id: {}'.format(full_profile_id))
                 raise CouldNotSetFanProfile()
+            else:
+                self.app.log.info('Successfully changed the fan profile to full with id {}'.format(
+                    full_profile_id
+                ))
 
         while True:
             # Get the current temp
