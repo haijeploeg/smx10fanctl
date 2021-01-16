@@ -15,14 +15,14 @@ The cli tool may or may not work on x8/x9/x11 motherboards as well. Feel free to
 
 ## Installation
 
-```
+```bash
 $ pip install smx10fanctl
 ```
 
 ### Systemd
 To run the auto command in systemd, so you can enable the service on the background and let it control your fan speed at startup. You can run the following command.
 
-```
+```bash
 ### Copy the systemd unit file
 $ wget https://raw.githubusercontent.com/haijeploeg/smx10fanctl/main/smx10fanctl.service
 
@@ -43,7 +43,7 @@ $ systemctl enable --now smx10fanctl
 ## Configuration
 To configure the application make sure that one of the following files exists:
 
-```
+```bash
 /etc/smx10fanctl/smx10fanctl.yml
 ~/.config/smx10fanctl/smx10fanctl.yml
 ~/.smx10fanctl/config/smx10fanctl.yml
@@ -61,7 +61,7 @@ This project includes a number of helpers in the `Makefile` to streamline common
 
 The following demonstrates setting up and working with a development environment:
 
-```
+```bash
 ### create a virtualenv for development
 $ make virtualenv
 $ source env/bin/activate
