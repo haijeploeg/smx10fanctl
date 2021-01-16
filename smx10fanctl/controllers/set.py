@@ -26,18 +26,27 @@ class Set(Controller):
                'type': int} ),
         ])
     def set_manually(self):
+        # Get arguments
         system = self.app.pargs.system
         peripheral = self.app.pargs.peripheral
         percentage = self.app.pargs.percentage
 
-        ipmi = IPMI()
+        # Get configuration
+        host = self.app.config.get('ipmi', 'host')
+        username = self.app.config.get('ipmi', 'username')
+        password = self.app.config.get('ipmi', 'password')
 
+        # Setup IPMI
+        ipmi = IPMI(host=host, username=username, password=password)
+
+        # If the system flag is supplied, set the fan speed
         if system:
             result = ipmi.set_fan_speed('system', percentage)
             if not result:
                 self.app.log.error('Failed to set the fan speed to {}% in zone system.'.format(
                     percentage
                 ))
+        # If the peripheral flag is supplied, set the fan speed
         if peripheral:
             result = ipmi.set_fan_speed('peripheral', percentage)
             if not result:

@@ -3,6 +3,15 @@ general:
   # Defaults to 5 seconds.
   poll_interval: 5
 
+  # Some processors are using the Package prefix others the Physical prefix.
+  # For example: Package id 0. If the sensors command return anything different
+  # than Package of Physical you can set this setting to that prefix.
+  # When using this setting, the highest temperature is returned from values
+  # that match the coretemp_label_prefix setting. When this setting is not being used
+  # the highest temperature of either the package or a core is being used as the core temp.
+  # You can also set this to a specific core or package. E.g.: Core 0, or: Package id 0.
+  coretemp_label_prefix: 'Package'
+
 ipmi:
   # Set authentication parameters. host, username and password 
   # are all optional if none are provided, the application will 

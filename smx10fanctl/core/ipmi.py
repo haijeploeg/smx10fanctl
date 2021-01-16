@@ -27,7 +27,10 @@ class IPMI:
         else:
             raise InvalidIPMISettings('Missing IPMI username and/or password settings')
 
-    def _build_full_cmd(self, cmd):
+    def _build_full_cmd(self, cmd, redirect_stdout=False):
+        if redirect_stdout:
+            return '{} {} >/dev/null'.format(self.ipmi_cmd_base, cmd)
+
         return '{} {}'.format(self.ipmi_cmd_base, cmd)
 
     def _percentage_to_hex(self, percentage):
@@ -59,7 +62,7 @@ class IPMI:
 
         hex_percentage = self._percentage_to_hex(percentage)
         cmd_args = 'raw 0x30 0x70 0x66 0x01 {} {}'.format(hex_zone, hex_percentage)
-        cmd = self._build_full_cmd(cmd_args)
+        cmd = self._build_full_cmd(cmd_args, redirect_stdout=True)
 
         exit_code = shell.cmd(cmd, capture=False)
 
