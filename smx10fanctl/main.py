@@ -10,7 +10,7 @@ from .controllers.set import Set
 CONFIG = init_defaults('general', 'ipmi', 'zones')
 CONFIG['general']['poll_interval'] = 5
 CONFIG['general']['coretemp_label_prefix'] = None
-CONFIG['ipmi']['host'] = None
+CONFIG['ipmi']['host'] = 'localhost'
 CONFIG['ipmi']['username'] = None
 CONFIG['ipmi']['password'] = None
 CONFIG['ipmi']['profiles'] = {'full': 1}
