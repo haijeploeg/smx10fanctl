@@ -19,8 +19,8 @@ setup(
     url='https://github.com/haijeploeg/smx10fanctl',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'tests*']),
-    package_data={'smx10fanctl': ['templates/*']},
-    include_package_data=True,
+    # package_data={'smx10fanctl': ['templates/*']},
+    # include_package_data=True,
     entry_points="""
         [console_scripts]
         smx10fanctl = smx10fanctl.main:main

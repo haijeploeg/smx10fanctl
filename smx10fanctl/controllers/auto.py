@@ -1,5 +1,6 @@
 from cement import Controller, ex
-
+from ..core.ipmi import IPMI
+from ..core.coretemp import get_current_cpu_temp
 
 class Auto(Controller):
     class Meta:
@@ -23,5 +24,4 @@ class Auto(Controller):
         system = self.app.pargs.system
         peripheral = self.app.pargs.peripheral
 
-        self.app.log.info('This function is not implemented yet')
-        print(self.app.config.get('zones', 'system'))
+        print(get_current_cpu_temp())

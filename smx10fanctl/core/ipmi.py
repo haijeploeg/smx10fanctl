@@ -38,6 +38,17 @@ class IPMI:
 
         return '0x{}'.format(int(hex_percentage))
 
+    def get_current_fan_profile(self):
+        cmd_args = 'raw 0x30 0x45 0x00'
+        cmd = self._build_full_cmd(cmd_args)
+
+        out, err, exit_code = shell.cmd(cmd)
+
+        if exit_code != 0:
+            return err
+        
+        return out
+
     def set_fan_speed(self, zone, percentage):
         if zone == 'system':
             hex_zone = '0x00'
@@ -47,12 +58,12 @@ class IPMI:
             raise UnknownZoneSpecified('Unknown zone: {}'.format(zone))
 
         hex_percentage = self._percentage_to_hex(percentage)
-        cmd_args = '0x30 0x70 0x66 0x01 {} {}'.format(hex_zone, hex_percentage)
+        cmd_args = 'raw 0x30 0x70 0x66 0x01 {} {}'.format(hex_zone, hex_percentage)
         cmd = self._build_full_cmd(cmd_args)
 
         exit_code = shell.cmd(cmd, capture=False)
 
-        if exit_code == 0:
-            return True
-        else:
+        if exit_code != 0:
             return False
+        
+        return True

@@ -1,3 +1,8 @@
+general:
+  # When running in auto mode set the poll interval to x seconds.
+  # Defaults to 5 seconds.
+  poll_interval: 5
+
 ipmi:
   # Set authentication parameters. host, username and password 
   # are all optional if none are provided, the application will 

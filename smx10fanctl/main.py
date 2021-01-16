@@ -7,7 +7,8 @@ from .controllers.set import Set
 
 
 # configuration defaults
-CONFIG = init_defaults('ipmi', 'zones')
+CONFIG = init_defaults('general', 'ipmi', 'zones')
+CONFIG['general']['poll_interval'] = 5
 CONFIG['ipmi']['host'] = 'localhost'
 CONFIG['ipmi']['profiles'] = {'full': 1}
 CONFIG['zones']['system'] = {0: 30, 80: 100}

@@ -2,3 +2,4 @@ cement==3.0.4
 pyyaml
 colorlog
 tabulate
+psutil

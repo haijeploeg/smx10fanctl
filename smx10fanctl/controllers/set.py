@@ -32,14 +32,15 @@ class Set(Controller):
 
         ipmi = IPMI()
 
-        headers = ['ZONE', 'PERCENTAGE', 'RESULT']
-        output = []
         if system:
             result = ipmi.set_fan_speed('system', percentage)
-            output.append(['SYSTEM', percentage, result])
-
+            if not result:
+                self.app.log.error('Failed to set the fan speed to {}% in zone system.'.format(
+                    percentage
+                ))
         if peripheral:
             result = ipmi.set_fan_speed('peripheral', percentage)
-            output.append(['PERIPHERAL', percentage, result])
-
-        self.app.render(output, headers=headers)
+            if not result:
+                self.app.log.error('Failed to set the fan speed to {}% in zone peripheral.'.format(
+                    percentage
+                ))
