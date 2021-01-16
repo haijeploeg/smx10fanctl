@@ -52,8 +52,9 @@ class Auto(Controller):
         while True:
             # Get the current temp
             current_temp = get_current_cpu_temp(coretemp_label_prefix)
+            self.app.log.info('Current temperature: {}'.format(current_temp))
 
-            # If the system flag is applied
+            # If the system flag is applied, follow this logic
             if system:
                 system_temp_list = system_target_temperatures.copy()
                 # if the current temperature does not match exact any of the
@@ -72,9 +73,16 @@ class Auto(Controller):
                 target_system_percentage = system_configuration[target_system_temp]
 
                 # Execute the command to set the fan speed in the system zone
-                print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
+                result = ipmi.set_fan_speed('system', target_system_percentage)
+                if not result:
+                    self.app.log.error('Failed to set the fan speed to {}% in zone system.'.format(
+                        target_system_percentage
+                    ))
+                else:
+                    self.app.log.info('Successfully set the fan speed to {}% in zone system.'.format(
+                        target_system_percentage))
 
-
+            # If the peripheral flag is applied, follow this logic
             if peripheral:
                 peripheral_temp_list = peripheral_target_temperatures.copy()
                 # if the current temperature does not match exact any of the
@@ -92,6 +100,14 @@ class Auto(Controller):
                 target_peripheral_percentage = peripheral_configuration[target_peripheral_temp]
                 
                 # Execute the command to set the fan speed in the system zone
-                print('ZONE PERIPHERAL - TEMP: {} - FAN: {}%'.format(current_temp, target_system_percentage))
+                result = ipmi.set_fan_speed('peripheral', target_peripheral_percentage)
+                if not result:
+                    self.app.log.error('Failed to set the fan speed to {}% in zone peripheral.'.format(
+                        target_peripheral_percentage
+                    ))
+                else:
+                    self.app.log.info('Successfully set the fan speed to {}% in zone peripheral.'.format(
+                        target_peripheral_percentage))
 
+            # Sleep the configured poll_interval_seconds
             time.sleep(poll_interval)
