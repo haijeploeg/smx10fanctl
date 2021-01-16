@@ -1,0 +1,14 @@
+[Unit]
+Description=smx10fanctl
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/smx10fanctl auto -s -p
+Type=simple
+Restart=on-failure
+RestartSec=6
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
