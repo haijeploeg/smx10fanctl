@@ -6,15 +6,38 @@ I am using a Noctua NH-U12DXi4 CPU cooler which has a minimal RPM of 300. When t
 Because the motherboard reads 0RPM, it will start to ramp up the fans again, this goes over and over again, which is really annoying. Therefor I created this CLI tool to control the fan speeds on the OS based on the CPU temperature. This script will only work on Linux distributions.
 
 ## Tested on
-I have developed this script with the following hardware/software.
+I have developed this cli tool with the following hardware/software.
 - Supermicro X10SRH-CF
 - Intel Xeon 2680 V4
 - Proxmox 6.3.1
+
+The cli tool may or may not work on x8/x9/x11 motherboards as well. Feel free to report back to me if you have tried this.
 
 ## Installation
 
 ```
 $ pip install smx10fanctl
+```
+
+### Systemd
+To run the auto command in systemd, so you can enable the service on the background and let it control your fan speed at startup. You can run the following command.
+
+```
+### Copy the systemd unit file
+$ wget https://raw.githubusercontent.com/haijeploeg/smx10fanctl/main/smx10fanctl.service
+
+### Check the path to smx10fanctl and adjust it in the service file if needed
+$ which smx10fanctl
+/usr/local/bin/smx10fanctl
+$ vim smx10fanctl
+
+### Move the service file
+$ mv smx10fanctl /etc/systemd/system/smx10fanctl.service
+$ chown root:root /etc/systemd/system/smx10fanctl.service
+$ chmod 644 /etc/systemd/system/smx10fanctl.service
+
+### Enable and start the systemd service
+$ systemctl enable --now smx10fanctl
 ```
 
 ## Configuration
@@ -40,13 +63,10 @@ The following demonstrates setting up and working with a development environment
 
 ```
 ### create a virtualenv for development
-
 $ make virtualenv
-
 $ source env/bin/activate
 
 
 ### run smx10fanctl cli application
-
 $ smx10fanctl --help
 ```
