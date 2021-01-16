@@ -3,6 +3,7 @@ from ..core.ipmi import IPMI
 from ..core.coretemp import get_current_cpu_temp
 
 import time
+import bisect
 
 
 class Auto(Controller):
@@ -38,14 +39,37 @@ class Auto(Controller):
 
         if system:
             system_configuration = self.app.config.get('zones', 'system')
+            system_target_temperatures = [*system_configuration]
+            system_target_temperatures.sort()
         if peripheral:
             peripheral_configuration = self.app.config.get('zones', 'peripheral')
+            peripheral_target_temperatures = [*peripheral_configuration]
+            peripheral_target_temperatures.sort()
         
         # Setup IPMI
         ipmi = IPMI(host=host, username=username, password=password)
 
         while True:
+            # Get the current temp
             current_temp = get_current_cpu_temp(coretemp_label_prefix)
-            self.app.print(current_temp)
+
+            # If the system flag is applied
+            if system:
+                system_temp_list = system_target_temperatures.copy()
+                # if the current temperature does not match exact any of the
+                # configured pwm steps target temperatures, ensure the current
+                # temperature is placed in the correct place in the list. And 
+                # get the correct index value -1. If the current temperature does
+                # match any of the configured values, get that exact index.
+                if current_temp not in system_temp_list:
+                    bisect.insort(system_temp_list, current_temp)
+                    index = max(0, system_temp_list.index(current_temp) - 1)
+                else:
+                    index = system_temp_list.index(current_temp)
+
+                target_system_temp = system_target_temperatures[index]
+                target_system_percentage = system_configuration[target_system_temp]
+
+            print('ZONE SYSTEM - TEMP: {} - FAN: {}%'.format(target_system_temp, target_system_percentage))
 
             time.sleep(poll_interval)
