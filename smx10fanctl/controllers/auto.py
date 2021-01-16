@@ -58,6 +58,8 @@ class Auto(Controller):
 
         full_profile_id = profiles['full']
         if full_profile_id != ipmi.get_current_fan_profile():
+            result = ipmi.set_fan_profile(full_profile_id)
+            print(result)
             if not ipmi.set_fan_profile(full_profile_id):
                 self.app.log.fatal('Could not set fan profile with id: {}'.format(full_profile_id))
                 raise CouldNotSetFanProfile()
