@@ -18,6 +18,7 @@ The cli tool may or may not work on x8/x9/x11 motherboards as well. Feel free to
 ## Installation
 
 ```bash
+$ apt install lm-sensors
 $ pip install smx10fanctl
 ```
 
@@ -72,3 +73,13 @@ $ source env/bin/activate
 ### run smx10fanctl cli application
 $ smx10fanctl --help
 ```
+
+## FAQ
+#### My fans are still ramping up after using this tool, is this normal?
+Supermicro boards are taking a threshold into account. You need to lower these thresholds to run the fans on a low RPM, e.g. 300RPM. You can lower those thresholds by using the following command. NOTE: adjust FAN1 with your FAN port.
+
+```bash
+$ ipmitool sensor thresh FAN1 lower 50 100 200
+```
+
+This will lower the non-recoverable setting to 50 (this will cause the RAMP up), the lower critical value to 100 and the lower non-critical value to 200. In the future you can do this with `smx10fanctl`.
