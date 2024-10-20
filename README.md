@@ -12,12 +12,11 @@ This tool will only work on Linux distributions.
 
 ## Tested on
 
-I have developed this cli tool with the following hardware/software.
-- Supermicro X10SRH-CF
-- Intel Xeon 2680 V4
-- Proxmox 6.3.1
+`smx10fanctl` has been tested on the following systems:
+- `Supermicro X10SRH-CF`, `Intel Xeon 2680 V4`, `Proxmox 6.3.1`
+- `X11SSH-F`, `Intel Xeon 1230 v6`, `Proxmox 8.2.4`
 
-The cli tool may or may not work on x8/x9/x11 motherboards as well. Feel free to report back to me if you have tried this.
+The cli tool may or may not work on x8/x9 motherboards as well. Feel free to report back to me if you have tried this.
 
 ## Installation
 
